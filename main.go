@@ -70,5 +70,20 @@ func main() {
 		return c.Status(fiber.StatusOK).JSON(fiber.Map{"success": success, "message": message})
 	})
 
+	app.Post("/authorize", func(c *fiber.Ctx) error {
+		r := new(structures.PasswordRequest) // new instance
+
+		c.BodyParser(r) // parse json
+		success := false
+		var message interface{}
+		message = "Invalid password."
+		if r.Password == m.PASSWORD {
+			success = true
+			message = "Valid password."
+		}
+
+		return c.Status(fiber.StatusOK).JSON(fiber.Map{"success": success, "message": message})
+	})
+
 	app.Listen(m.HOST + ":" + m.PORT)
 }

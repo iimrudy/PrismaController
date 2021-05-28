@@ -4,6 +4,7 @@ password: "my_password"
 commands:
   - 0:
     name: "mute discord"
+    display_name: "Mic Mute Discord"
     buttons: ["m"]
     shift: false
     rshift: false
@@ -13,6 +14,7 @@ commands:
     ralt: false
   - 1:
     name: "deaf discord"
+    display_name: "Audio Mute Discord"
     buttons: ["n"]
     shift: false
     rshift: false
@@ -20,4 +22,13 @@ commands:
     rctrl: false
     alt: true
     ralt: false
-
+  - 2:
+    name: "prestazioni"
+    display_name: "Prestazioni AMD"
+    buttons: ["o"]
+    shift: true
+    rshift: false
+    ctrl: true
+    rctrl: false
+    alt: false
+    ralt: false
