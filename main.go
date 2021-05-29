@@ -36,7 +36,7 @@ func main() {
 		if r.Password == m.PASSWORD {
 			for _, cmd := range m.COMMANDS {
 				if cmd.Name == r.CommandName {
-					utils.RunCommand(cmd)
+					go utils.RunCommand(cmd)
 					success = true
 					message = "executed"
 					break

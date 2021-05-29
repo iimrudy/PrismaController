@@ -8,16 +8,17 @@ type Configuration struct {
 }
 
 type Command struct {
-	Name        string   `yaml:"name"`
-	DisplayName string   `yaml:"display_name"`
-	Buttons     []string `yaml:"buttons"`
-	Logo        string   `yaml:"logo"`
-	HasShift    bool     `yaml:"shift"`
-	HasRShift   bool     `yaml:"rshift"`
-	HasCtrl     bool     `yaml:"ctrl"`
-	HasRCtrl    bool     `yaml:"rctrl"`
-	HasAlt      bool     `yaml:"alt"`
-	HasRAlt     bool     `yaml:"ralt"`
+	Name         string   `yaml:"name"`
+	DisplayName  string   `yaml:"display_name"`
+	ShellCommand string   `yaml:"shell_command"`
+	Buttons      []string `yaml:"buttons"`
+	Logo         string   `yaml:"logo"`
+	HasShift     bool     `yaml:"shift"`
+	HasRShift    bool     `yaml:"rshift"`
+	HasCtrl      bool     `yaml:"ctrl"`
+	HasRCtrl     bool     `yaml:"rctrl"`
+	HasAlt       bool     `yaml:"alt"`
+	HasRAlt      bool     `yaml:"ralt"`
 }
 
 type MinifiedCommand struct {
