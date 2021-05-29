@@ -18,6 +18,7 @@ After that Un-Zip the folder.
 - Keyboard Combinations
 - Logo on the button
 - Execute shell commands
+- Prevent Display Suspend/Sleep
 
 
 ## 📝 To-Do Features
@@ -25,7 +26,7 @@ After that Un-Zip the folder.
 - [x] Keyboard combination commands
 - [x] Execute shell command
 - [ ] Cookie-based authentication
-- [ ] Disable Display Sleep/Suspends
+- [x] Disable Display Sleep/Suspends
 
 Suggest a new feature with the [Issue System](https://github.com/iimrudy/PrismaController/issues)
 
