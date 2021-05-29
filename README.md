@@ -16,7 +16,7 @@ After that Un-Zip the folder.
 ## 📝 To-Do
 
 - [x] Keyboard combination commands
-- [ ] Execute shell command
+- [x] Execute shell command
 - [ ] Cookie-based authentication
 - [ ] Some code improvement.
 
