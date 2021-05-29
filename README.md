@@ -13,12 +13,21 @@ After that Un-Zip the folder.
 
 // to write
 
-## 📝 To-Do
+## ✅ Features
+
+- Keyboard Combinations
+- Logo on the button
+- Execute shell commands
+
+
+## 📝 To-Do Features
 
 - [x] Keyboard combination commands
 - [x] Execute shell command
 - [ ] Cookie-based authentication
-- [ ] Some code improvement.
+- [ ] Disable Display Sleep/Suspends
+
+Suggest a new feature with the [Issue System](https://github.com/iimrudy/PrismaController/issues)
 
 ## 🔥 Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
