@@ -13,6 +13,7 @@ import (
 func RunCommand(command structures.Command) {
 	var err error
 	if len(command.Buttons) > 0 {
+		var kb keybd_event.KeyBonding
 		keys := []int{}
 		for _, b := range command.Buttons {
 			x := GetKeyCode(b)
@@ -21,7 +22,7 @@ func RunCommand(command structures.Command) {
 			}
 		}
 
-		kb, err := keybd_event.NewKeyBonding()
+		kb, err = keybd_event.NewKeyBonding()
 		if err != nil {
 			log.Fatal(err)
 		}
