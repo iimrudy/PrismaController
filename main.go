@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
@@ -22,7 +21,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}
-	fmt.Printf("--- m:\n%v\n\n", m)
+	//fmt.Printf("--- m:\n%v\n\n", m)
 
 	//fmt.Println(utils.RunCommand(m.COMMANDS[0]))
 
@@ -50,6 +49,8 @@ func main() {
 
 		return c.Status(fiber.StatusOK).JSON(fiber.Map{"success": success, "message": message})
 	})
+
+	app.Static("/", "./static")
 
 	app.Post("/commands/get", func(c *fiber.Ctx) error {
 		r := new(structures.PasswordRequest) // new instance

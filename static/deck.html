@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrismaController - Deck</title>
+
+    <link rel="stylesheet" href="/style/main.css">
+
+</head>
+
+<body onload="renderCommands()">
+
+    <div class="deck" id="deck">
+
+    </div>
+
+    <script>
+        function checkAuth() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('token')) {
+                const auth = urlParams.get('token');
+                return auth
+            } else {
+                return false
+            }
+        }
+
+        function renderCommands() {
+            let result = checkAuth()
+            if (result) {
+                const data = { "password": result };
+                fetch('/commands/get', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            console.log(data)
+                            data.message.forEach(element => {
+                                let logo = (element.logo == "") ? "/images/default.png" : `/images/${element.logo}`;
+                                document.getElementById("deck").innerHTML += `
+                                    <div class="element" id="${element.name}" onclick="executeCommand(this.id)">
+                                        <div style="text-align: center;">
+                                            <img src="${logo}"/>
+                                        </div>
+                                        <p class="subtitle">${element.display_name}</p>    
+                                    </div>
+                                `;
+                            })
+                        } else {
+                            console.log(`Something goes wrong`);
+                        }
+
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            } else {
+                location.href = `./index.html`;
+            }
+        }
+
+        function executeCommand(element) {
+            let result = checkAuth()
+            if (result) {
+                const data = { "password": result, "command": element };
+                fetch('/commands/execute', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        if (!data.success) {
+                            document.getElementById(element).style.boxShadow = "3px 3px 10px 1px red";
+                        } else {
+                            document.getElementById(element).style.boxShadow = "3px 3px 10px 1px green";
+                        }
+                        setTimeout(() => {
+                            document.getElementById(element).style.boxShadow = "3px 3px 10px 1px #171b1f";
+                        }, 1500);
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            } else {
+                location.href = `/index.html`;
+            }
+        }
+    </script>
+</body>
+
+</html>
