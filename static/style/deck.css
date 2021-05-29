@@ -36,6 +36,27 @@
     text-align: center;
 }
 
+.togglescreen {
+    color: white;
+    cursor: pointer;
+    background-color: #2d333d;
+    box-shadow: 3px 3px 10px 1px #171b1f;
+    border-radius: 50%;
+    float: left;
+    padding: 10px;
+    margin: 10px;
+    display: flex;
+    width: 22px;
+    transition: .3s all ease-in-out;
+    justify-content: center;
+    align-items: center;
+}
+
+.togglescreen:hover {
+    background-color: #171b1f;
+    box-shadow: 3px 3px 10px 1px #0c0e11;
+}
+
 @media only screen 
     and (max-width: 768px)
     and (max-width: 1024px) {

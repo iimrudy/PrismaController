@@ -13,11 +13,42 @@
 
 <body onload="renderCommands()">
 
+    <div class="togglescreen"  onclick="toggleFS()">⤢</div>
     <div class="deck" id="deck">
 
     </div>
 
     <script>
+        var elem = document.documentElement;
+
+        function openFullscreen() {
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) { /* Safari */
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { /* IE11 */
+                elem.msRequestFullscreen();
+            }
+        }
+
+        function closeFullscreen() {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) { /* Safari */
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) { /* IE11 */
+                document.msExitFullscreen();
+            }
+        }
+
+        function toggleFS() {
+            if ((window.fullScreen) ||(window.innerWidth == screen.width && window.innerHeight == screen.height)) {
+                closeFullscreen();
+            } else {
+                openFullscreen();
+            }
+        }
+
         function checkAuth() {
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.has('token')) {
@@ -107,7 +138,6 @@
             e.preventDefault();
             document.body.style.zoom = 1;
         });
-
         document.addEventListener('gestureend', function (e) {
             e.preventDefault();
             document.body.style.zoom = 1;
