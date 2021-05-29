@@ -8,12 +8,13 @@
     <title>PrismaController - Deck</title>
 
     <link rel="stylesheet" href="/style/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nosleep/0.12.0/NoSleep.min.js"></script>
 
 </head>
 
 <body onload="renderCommands()">
 
-    <div class="togglescreen"  onclick="toggleFS()">⤢</div>
+    <div class="togglescreen left"  onclick="toggleFS()">⤢</div><div class="togglescreen right" id="wake-lock">🔓</div>
     <div class="deck" id="deck">
 
     </div>
@@ -143,6 +144,23 @@
             document.body.style.zoom = 1;
         });
     </script>
+
+<script>
+    var noSleep = new NoSleep();
+    var wakeLockEnabled = false;
+    var toggleEl = document.querySelector("#wake-lock");
+    toggleEl.addEventListener('click', function() {
+      if (!wakeLockEnabled) {
+        noSleep.enable(); // keep the screen on!
+        wakeLockEnabled = true;
+        document.querySelector("#wake-lock").innerText = "🔒";
+      } else {
+        noSleep.disable(); // let the screen turn off.
+        wakeLockEnabled = false;
+        document.querySelector("#wake-lock").innerText = "🔓";
+      }
+    }, false);
+  </script>
 </body>
 
 </html>

@@ -44,7 +44,6 @@
     background-color: #2d333d;
     box-shadow: 3px 3px 10px 1px #171b1f;
     border-radius: 50%;
-    float: left;
     padding: 10px;
     margin: 10px;
     display: flex;
@@ -57,6 +56,14 @@
 .togglescreen:hover {
     background-color: #171b1f;
     box-shadow: 3px 3px 10px 1px #0c0e11;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
 }
 
 @media only screen 
