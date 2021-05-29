@@ -1,6 +1,6 @@
 # PrismaController 💎
 
-PrismaController is an open source project to execute commands on your tablet pc!
+PrismaController is an open source project to execute commands on your pc from other devices!
 
 ## Installation
 
