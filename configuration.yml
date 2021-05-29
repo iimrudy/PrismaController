@@ -8,6 +8,7 @@ commands:
     buttons: ["m"]
     shift: false
     rshift: false
+    logo: "mute-all.png"
     ctrl: true
     rctrl: false
     alt: true
@@ -16,6 +17,7 @@ commands:
     name: "deaf discord"
     display_name: "Audio Mute Discord"
     buttons: ["n"]
+    logo: "mute.png"
     shift: false
     rshift: false
     ctrl: true

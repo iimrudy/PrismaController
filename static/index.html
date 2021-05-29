@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrismaController - Home</title>
+
+    <link rel="stylesheet" href="/style/main.css">
+    <!--<script src="./scripts/loadElements.js"></script>-->
+
+</head>
+<body>
+    
+
+    <div class="authform">
+        <form>
+            <p class="input-title">Authorize Deck</p>
+            <p id="log"></p>
+            <input type="text" id="auth-token" name="auth-token" placeholder="Auth Token">
+            <input type="button" value="Authorize" onclick="handleAuth()">
+        </form>
+    </div>
+
+    <script>
+        function handleAuth(){
+            let auth = document.getElementById("auth-token").value;
+            if (auth) {
+                const data = {"password": auth};
+                fetch('/authorize', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        },
+                    body: JSON.stringify(data),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Success:', data);
+                        if (data.success == false){
+                            document.getElementById("log").innerText = data.message;
+                        } else {
+                            location.href = `/deck.html?token=${auth}`;
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                        document.getElementById("log").innerText = error;
+                    });
+            }
+
+        }
+    </script>
+
+</body>
+</html>

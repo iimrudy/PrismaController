@@ -1,0 +1,19 @@
+@import url("./auth.css");
+@import url("./deck.css");
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+
+* {
+    margin: 0;
+    top: 0;
+    overflow-x: hidden;
+    font-family: 'Poppins', sans-serif;
+}
+
+html, body {
+    background-color: #22272E;
+}
+
+.darkmode-layer, .darkmode-toggle {
+    z-index: 500;
+}
