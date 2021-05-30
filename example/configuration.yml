@@ -1,0 +1,53 @@
+host: "0.0.0.0"
+port: "9871"
+password: "my_password"
+commands:
+  - 0:
+    name: "mute discord"
+    display_name: "Mic Mute Discord"
+    buttons: ["m"]
+    shift: false
+    rshift: false
+    logo: "mute.png"
+    ctrl: true
+    rctrl: false
+    alt: true
+    ralt: false
+  - 1:
+    name: "deaf discord"
+    display_name: "Audio Mute Discord"
+    buttons: ["n"]
+    logo: "mute-all.png"
+    shift: false
+    rshift: false
+    ctrl: true
+    rctrl: false
+    alt: true
+    ralt: false
+  - 2:
+    name: "prestazioni"
+    display_name: "Prestazioni AMD"
+    logo: "metrics.png"
+    buttons: ["o"]
+    shift: true
+    rshift: false
+    ctrl: true
+    rctrl: false
+    alt: false
+    ralt: false
+  - 3:
+    name: "stream"
+    display_name: "Discord Stream"
+    logo: "streaming.png"
+    buttons: ["b"]
+    shift: false
+    rshift: false
+    ctrl: true
+    rctrl: false
+    alt: true
+    ralt: false
+  - 4:
+    name: "apex"
+    display_name: "Run Apex"
+    logo: "apex-logo.png"
+    shell_command: "cmd /C start steam://rungameid/1172470"
