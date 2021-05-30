@@ -1,6 +1,41 @@
 host: "0.0.0.0"
 port: "9871"
-password: "my_password"
+password: "my_password" # put you password here
+# ------------------------
+# Keyboard Combination Button
+#  - id:
+#    name: "mute discord"
+#    display_name: "Mic Mute Discord"
+#    keys: ["m"]
+#    shift: false
+#    rshift: false
+#    logo: "mute.png"
+#    ctrl: true
+#    rctrl: false
+#    alt: true
+#    ralt: false
+# ------------------------
+# Shell Button
+#  - id:
+#    name: "browser"
+#    display_name: "Open Edge"
+#    logo: "meet.png"
+#    shell_command: "cmd /C start msedge"
+# ------------------------
+# ATTENTION
+# every "- :" need to be different
+# ------------------------
+# WRONG:
+# buttons:
+# - 0: ...
+# - 0: ...
+# ------------------------
+# RIGHT:
+# buttons:
+# - 0: ...
+# - 1: ...
+# ------------------------
+
 buttons:
   - 0:
     name: "mute discord"
@@ -15,6 +50,6 @@ buttons:
     ralt: false
   - 1:
     name: "apex"
-    display_name: "Run Apex"
+    display_name: "Start Apex Legends"
     logo: "apex-logo.png"
     shell_command: "cmd /C start steam://rungameid/1172470"
