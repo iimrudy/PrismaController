@@ -15,7 +15,7 @@ func main() {
 
 	m := new(structures.Configuration)
 
-	content, err := utils.ReadFileToString("configuration.yml")
+	content, err := utils.ReadFileToString("config.yml")
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}
