@@ -16,3 +16,4 @@
 /icons/*
 /config.yml
 main-packr.go
+packrd/packed-packr.go
