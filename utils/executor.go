@@ -10,12 +10,12 @@ import (
 	"github.com/micmonay/keybd_event"
 )
 
-func RunCommand(command structures.Command) {
+func RunCommand(command structures.Button) {
 	var err error
-	if len(command.Buttons) > 0 {
+	if len(command.Keys) > 0 {
 		var kb keybd_event.KeyBonding
 		keys := []int{}
-		for _, b := range command.Buttons {
+		for _, b := range command.Keys {
 			x := GetKeyCode(b)
 			if x != -1 {
 				keys = append(keys, x)

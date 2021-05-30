@@ -13,13 +13,13 @@ import (
 
 func main() {
 
-	m := new(structures.Configuration)
+	config := new(structures.Configuration)
 
 	content, err := utils.ReadFileToString("config.yml")
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}
-	err = yaml.Unmarshal([]byte(*content), &m)
+	err = yaml.Unmarshal([]byte(*content), &config)
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}
@@ -30,13 +30,13 @@ func main() {
 	app := fiber.New()
 
 	app.Post("/commands/execute", func(c *fiber.Ctx) error {
-		r := new(structures.CommandRequest) // new instance
+		r := new(structures.ClickButtonRequest) // new instance
 
 		c.BodyParser(r) // parse json
 		success := false
 		message := "command not found"
-		if r.Password == m.PASSWORD {
-			for _, cmd := range m.COMMANDS {
+		if r.Password == config.PASSWORD {
+			for _, cmd := range config.BUTTONS {
 				if cmd.Name == r.CommandName {
 					go utils.RunCommand(cmd)
 					success = true
@@ -65,11 +65,11 @@ func main() {
 		success := false
 		var message interface{}
 		message = "Invalid password."
-		if r.Password == m.PASSWORD {
+		if r.Password == config.PASSWORD {
 			success = true
-			mcmds := []structures.MinifiedCommand{}
-			for _, cmd := range m.COMMANDS {
-				mcmds = append(mcmds, utils.CommandToMiniCommand(cmd))
+			mcmds := []structures.MinifiedButton{}
+			for _, cmd := range config.BUTTONS {
+				mcmds = append(mcmds, utils.ButtonToMinifiedButton(cmd))
 			}
 			message = mcmds
 		}
@@ -84,7 +84,7 @@ func main() {
 		success := false
 		var message interface{}
 		message = "Invalid password."
-		if r.Password == m.PASSWORD {
+		if r.Password == config.PASSWORD {
 			success = true
 			message = "Valid password."
 		}
@@ -92,5 +92,5 @@ func main() {
 		return c.Status(fiber.StatusOK).JSON(fiber.Map{"success": success, "message": message})
 	})
 
-	app.Listen(m.HOST + ":" + m.PORT)
+	app.Listen(config.HOST + ":" + config.PORT)
 }

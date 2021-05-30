@@ -1,17 +1,17 @@
 package structures
 
 type Configuration struct {
-	HOST     string    `yaml:"host"`
-	PORT     string    `yaml:"port"`
-	PASSWORD string    `yaml:"password"`
-	COMMANDS []Command `yaml:"commands,flow"`
+	HOST     string   `yaml:"host"`
+	PORT     string   `yaml:"port"`
+	PASSWORD string   `yaml:"password"`
+	BUTTONS  []Button `yaml:"buttons,flow"`
 }
 
-type Command struct {
+type Button struct {
 	Name         string   `yaml:"name"`
 	DisplayName  string   `yaml:"display_name"`
 	ShellCommand string   `yaml:"shell_command"`
-	Buttons      []string `yaml:"buttons"`
+	Keys         []string `yaml:"keys"`
 	Logo         string   `yaml:"logo"`
 	HasShift     bool     `yaml:"shift"`
 	HasRShift    bool     `yaml:"rshift"`
@@ -21,13 +21,13 @@ type Command struct {
 	HasRAlt      bool     `yaml:"ralt"`
 }
 
-type MinifiedCommand struct {
+type MinifiedButton struct {
 	Name        string `json:"name"`
 	Logo        string `json:"logo"`
 	DisplayName string `json:"display_name"`
 }
 
-type CommandRequest struct {
+type ClickButtonRequest struct {
 	Password    string `json:"password"`
 	CommandName string `json:"command"`
 }
