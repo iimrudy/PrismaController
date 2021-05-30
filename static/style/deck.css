@@ -11,6 +11,7 @@
     min-width: 100px;
     width: 10%;
     margin-right: 2%;
+    margin-top: 5px;
     cursor: pointer;
     transition: .3s all ease-in-out;
     padding: 15px 5px;
@@ -41,8 +42,8 @@
 .togglescreen {
     color: white;
     cursor: pointer;
-    background-color: #2d333d;
-    box-shadow: 3px 3px 10px 1px #171b1f;
+    background-color: #EB459E;
+    box-shadow: 2px 2px 12px 0px #9f115d;
     border-radius: 50%;
     padding: 10px;
     margin: 10px;
@@ -54,8 +55,8 @@
 }
 
 .togglescreen:hover {
-    background-color: #171b1f;
-    box-shadow: 3px 3px 10px 1px #0c0e11;
+    background-color: #cd1678;
+    box-shadow: 3px 3px 10px 1px #880f50;
 }
 
 .left {

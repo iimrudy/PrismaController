@@ -19,6 +19,7 @@
 
     </div>
 
+
     <script>
         var elem = document.documentElement;
 
@@ -114,12 +115,12 @@
                     .then(data => {
                         console.log(data);
                         if (!data.success) {
-                            document.getElementById(element).style.boxShadow = "3px 3px 10px 1px red";
+                            document.getElementById(element).style.boxShadow = "3px 3px 10px 1px #ED4245";
                         } else {
-                            document.getElementById(element).style.boxShadow = "3px 3px 10px 1px green";
+                            document.getElementById(element).style.boxShadow = "3px 3px 10px 1px #57F287";
                         }
                         setTimeout(() => {
-                            document.getElementById(element).style.boxShadow = "3px 3px 10px 1px #171b1f";
+                            document.getElementById(element).style.boxShadow = "3px 3px 10px 1px #171B1F";
                         }, 1500);
                     })
                     .catch((error) => {
@@ -145,21 +146,21 @@
         });
     </script>
 
-<script>
-    var noSleep = new NoSleep();
-    var wakeLockEnabled = false;
-    var toggleEl = document.querySelector("#wake-lock");
-    toggleEl.addEventListener('click', function() {
-      if (!wakeLockEnabled) {
-        noSleep.enable(); // keep the screen on!
-        wakeLockEnabled = true;
-        document.querySelector("#wake-lock").innerText = "🔒";
-      } else {
-        noSleep.disable(); // let the screen turn off.
-        wakeLockEnabled = false;
-        document.querySelector("#wake-lock").innerText = "🔓";
-      }
-    }, false);
+    <script>
+        var noSleep = new NoSleep();
+        var wakeLockEnabled = false;
+        var toggleEl = document.querySelector("#wake-lock");
+        toggleEl.addEventListener('click', function() {
+        if (!wakeLockEnabled) {
+            noSleep.enable(); // keep the screen on!
+            wakeLockEnabled = true;
+            document.querySelector("#wake-lock").innerText = "🔒";
+        } else {
+            noSleep.disable(); // let the screen turn off.
+            wakeLockEnabled = false;
+            document.querySelector("#wake-lock").innerText = "🔓";
+        }
+        }, false);
   </script>
 </body>
 
