@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	rice "github.com/GeertJohan/go.rice"
+	"github.com/gobuffalo/packr/v2"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
 	"github.com/iimrudy/prismacontroller/structures"
@@ -53,7 +53,7 @@ func main() {
 	})
 
 	app.Use("/", filesystem.New(filesystem.Config{
-		Root: rice.MustFindBox("static").HTTPBox(),
+		Root: packr.New("Static Assets", "/static"),
 	}))
 
 	app.Static("/icons", "./icons")
