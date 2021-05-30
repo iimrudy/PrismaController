@@ -15,3 +15,4 @@
 # vendor/
 /icons/*
 /config.yml
+main-packr.go
