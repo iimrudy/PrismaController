@@ -77,7 +77,7 @@
                         if (data.success) {
                             console.log(data)
                             data.message.forEach(element => {
-                                let logo = (element.logo == "") ? "/img/default.png" : `/images/${element.logo}`;
+                                let logo = (element.logo == "") ? "/img/default.png" : `/icons/${element.logo}`;
                                 document.getElementById("deck").innerHTML += `
                                     <div class="element" id="${element.name}" onclick="executeCommand(this.id)">
                                         <div style="text-align: center;">
