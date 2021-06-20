@@ -2,7 +2,6 @@ package utils
 
 import (
 	"bufio"
-	"log"
 	"os"
 	"path/filepath"
 )
@@ -22,7 +21,7 @@ func FileLines(path string) (*[]string, error) {
 	var lines []string
 	file, err := os.Open(path)
 	if err != nil {
-		log.Fatal(err)
+		return &lines, err
 	}
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
@@ -36,7 +35,7 @@ func ReadFileToString(path string) (*string, error) {
 	content := ""
 	file, err := os.Open(path)
 	if err != nil {
-		log.Fatal(err)
+		return &content, err
 	}
 	defer file.Close()
 	scanner := bufio.NewScanner(file)

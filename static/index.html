@@ -15,7 +15,7 @@
     
 
     <div class="authform">
-        <form>
+        <form onsubmit="handleAuth()">
             <p class="input-title">Authorize Deck</p>
             <p id="log"></p>
             <input type="text" id="auth-token" name="auth-token" placeholder="Auth Token">
@@ -24,7 +24,7 @@
     </div>
 
     <script>
-        function handleAuth(){
+        function handleAuth() {
             let auth = document.getElementById("auth-token").value;
             if (auth) {
                 const data = {"password": auth};

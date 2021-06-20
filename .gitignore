@@ -17,3 +17,4 @@
 /config.yml
 main-packr.go
 packrd/packed-packr.go
+logs.txt

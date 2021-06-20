@@ -9,12 +9,12 @@
 
     <link rel="stylesheet" href="/style/main.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/nosleep/0.12.0/NoSleep.min.js"></script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body onload="renderCommands()">
 
-    <div class="togglescreen left"  onclick="toggleFS()">⤢</div><div class="togglescreen right" id="wake-lock">🔓</div>
+    <div class="togglescreen left" id="fs-icon" onclick="toggleFS()"><i class="fas fa-expand-arrows-alt"></i></div><div class="togglescreen right" id="wake-lock"><i class="fas fa-lock-open"></i></div>
     <div class="deck" id="deck">
 
     </div>
@@ -31,6 +31,7 @@
             } else if (elem.msRequestFullscreen) { /* IE11 */
                 elem.msRequestFullscreen();
             }
+            document.getElementById("fs-icon").innerHTML = '<i class="fas fa-compress-arrows-alt"></i>';
         }
 
         function closeFullscreen() {
@@ -41,6 +42,7 @@
             } else if (document.msExitFullscreen) { /* IE11 */
                 document.msExitFullscreen();
             }
+            document.getElementById("fs-icon").innerHTML = '<i class="fas fa-expand-arrows-alt"></i>';
         }
 
         function toggleFS() {
@@ -154,11 +156,11 @@
         if (!wakeLockEnabled) {
             noSleep.enable(); // keep the screen on!
             wakeLockEnabled = true;
-            document.querySelector("#wake-lock").innerText = "🔒";
+            document.querySelector("#wake-lock").innerHTML = '<i class="fas fa-lock"></i>';
         } else {
             noSleep.disable(); // let the screen turn off.
             wakeLockEnabled = false;
-            document.querySelector("#wake-lock").innerText = "🔓";
+            document.querySelector("#wake-lock").innerHTML = '<i class="fas fa-lock-open"></i>';
         }
         }, false);
   </script>

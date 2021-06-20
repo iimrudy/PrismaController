@@ -1,8 +1,11 @@
 package main
 
 import (
+	"flag"
 	"log"
+	"os"
 
+	"github.com/getlantern/systray"
 	"github.com/gobuffalo/packr/v2"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
@@ -11,34 +14,61 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+var (
+	Config       structures.Configuration
+	fiberAPP     *fiber.App
+	StaicDataBox *packr.Box
+	Path         string
+)
+
+func init() {
+	flag.StringVar(&Path, "path", "./", "Configuration & Icons location")
+	flag.Parse() // parse args
+
+	file, err := os.OpenFile(Path+"logs.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.SetOutput(file)
+
+	log.SetPrefix("[PrismaController] ")
+	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
+
+	content, err := utils.ReadFileToString(Path + "config.yml")
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	err = yaml.Unmarshal([]byte(*content), &Config)
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	log.Println("Using path" + Path)
+}
+
 func main() {
+	StaicDataBox = packr.New("Static Assets", "/static")
 
-	config := new(structures.Configuration)
+	go systray.Run(onReady, onExit)
+	log.Println("PrismaController Started")
 
-	content, err := utils.ReadFileToString("config.yml")
-	if err != nil {
-		log.Fatalf("error: %v", err)
-	}
-	err = yaml.Unmarshal([]byte(*content), &config)
-	if err != nil {
-		log.Fatalf("error: %v", err)
-	}
-	//fmt.Printf("--- m:\n%v\n\n", m)
+	fiberAPP = fiber.New()
 
-	//fmt.Println(utils.RunCommand(m.COMMANDS[0]))
-
-	app := fiber.New()
-
-	app.Post("/commands/execute", func(c *fiber.Ctx) error {
+	fiberAPP.Post("/commands/execute", func(c *fiber.Ctx) error {
 		r := new(structures.ClickButtonRequest) // new instance
 
 		c.BodyParser(r) // parse json
 		success := false
 		message := "command not found"
-		if r.Password == config.PASSWORD {
-			for _, cmd := range config.BUTTONS {
+		if r.Password == Config.PASSWORD {
+			for _, cmd := range Config.BUTTONS {
 				if cmd.Name == r.CommandName {
-					go utils.RunCommand(cmd)
+					go func() {
+						err := utils.RunCommand(cmd)
+						if err != nil {
+							log.Println(err.Error())
+						}
+					}()
 					success = true
 					message = "executed"
 					break
@@ -52,23 +82,23 @@ func main() {
 		return c.Status(fiber.StatusOK).JSON(fiber.Map{"success": success, "message": message})
 	})
 
-	app.Use("/", filesystem.New(filesystem.Config{
-		Root: packr.New("Static Assets", "/static"),
+	fiberAPP.Use("/", filesystem.New(filesystem.Config{
+		Root: StaicDataBox,
 	}))
 
-	app.Static("/icons", "./icons")
+	fiberAPP.Static("/icons", Path+"icons")
 
-	app.Post("/commands/get", func(c *fiber.Ctx) error {
+	fiberAPP.Post("/commands/get", func(c *fiber.Ctx) error {
 		r := new(structures.PasswordRequest) // new instance
 
 		c.BodyParser(r) // parse json
 		success := false
 		var message interface{}
 		message = "Invalid password."
-		if r.Password == config.PASSWORD {
+		if r.Password == Config.PASSWORD {
 			success = true
 			mcmds := []structures.MinifiedButton{}
-			for _, cmd := range config.BUTTONS {
+			for _, cmd := range Config.BUTTONS {
 				mcmds = append(mcmds, utils.ButtonToMinifiedButton(cmd))
 			}
 			message = mcmds
@@ -77,20 +107,47 @@ func main() {
 		return c.Status(fiber.StatusOK).JSON(fiber.Map{"success": success, "message": message})
 	})
 
-	app.Post("/authorize", func(c *fiber.Ctx) error {
+	fiberAPP.Post("/authorize", func(c *fiber.Ctx) error {
 		r := new(structures.PasswordRequest) // new instance
 
 		c.BodyParser(r) // parse json
 		success := false
 		var message interface{}
 		message = "Invalid password."
-		if r.Password == config.PASSWORD {
+		if r.Password == Config.PASSWORD {
 			success = true
 			message = "Valid password."
 		}
 
 		return c.Status(fiber.StatusOK).JSON(fiber.Map{"success": success, "message": message})
 	})
+	fiberAPP.Listen(Config.HOST + ":" + Config.PORT)
+}
 
-	app.Listen(config.HOST + ":" + config.PORT)
+func onReady() {
+	s, err := StaicDataBox.FindString("favicon.ico")
+	if err != nil {
+		log.Panicln(err.Error())
+	}
+
+	systray.SetIcon([]byte(s))
+	systray.SetTitle("PrismaController")
+	systray.SetTooltip("PrismaController Menu")
+	quitBtn := systray.AddMenuItem("Quit", "Quit PrismaController")
+	go func() {
+		for {
+			select {
+			case <-quitBtn.ClickedCh:
+				systray.Quit()
+				return
+			}
+		}
+	}()
+	// Sets the icon of a menu item. Only available on Mac and Windows.
+}
+
+func onExit() {
+	log.Println("Exiting now.")
+	fiberAPP.Shutdown()
+	os.Exit(0)
 }

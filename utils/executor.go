@@ -10,7 +10,7 @@ import (
 	"github.com/micmonay/keybd_event"
 )
 
-func RunCommand(command structures.Button) {
+func RunCommand(command structures.Button) error {
 	var err error
 	if len(command.Keys) > 0 {
 		var kb keybd_event.KeyBonding
@@ -48,9 +48,7 @@ func RunCommand(command structures.Button) {
 		err = errors.New("invalid Command '" + command.Name + "', no ShellCommand and no KeyCombinations")
 	}
 
-	if err != nil {
-		log.Println("Error occurred while executing a command: " + err.Error())
-	}
+	return err
 }
 
 func remove(slice []string, s int) []string {
