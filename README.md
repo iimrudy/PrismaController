@@ -10,6 +10,9 @@ Download the binary for you current os in the [Release](https://github.com/iimru
 
 After that Un-Zip the folder.
 
+Edit the config.yml adding your commands.
+
+then double click on 'prismacontroller.exe' to start the application.
 
 ## ✨ Usage
 
