@@ -2,6 +2,8 @@
 
 PrismaController is an open source project to execute commands on your pc from other devices!
 
+![](https://raw.githubusercontent.com/iimrudy/PrismaController/master/.github/img1.png)
+
 ## Installation
 
 Download the binary for you current os in the [Release](https://github.com/iimrudy/PrismaController/releases) section.
