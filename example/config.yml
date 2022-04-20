@@ -43,7 +43,7 @@ buttons:
     keys: ["m"]
     shift: false
     rshift: false
-    logo: "mute.png"
+    logo: "meet.png"
     ctrl: true
     rctrl: false
     alt: true
