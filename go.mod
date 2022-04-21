@@ -1,6 +1,6 @@
 module github.com/iimrudy/prismacontroller
 
-go 1.16
+go 1.18
 
 require (
 	github.com/getlantern/golog v0.0.0-20210606115803-bce9f9fe5a5f // indirect
