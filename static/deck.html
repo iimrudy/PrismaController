@@ -32,45 +32,34 @@
 
     const delayMap = new Map();
 
-    function checkAuth() {
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.has('token')) {
-            const auth = urlParams.get('token');
-            return auth
-        } else {
-            return false
-        }
-    }
     let commands = {}
     function renderCommands() {
-        let result = checkAuth()
-        if (result) {
-            const data = {"password": result};
+
             fetch('/commands/get', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
+                method: 'GET',
             })
                 .then(response => response.json())
                 .then(data => {
+                    if (!data.success) {
+                        if (data.message === "Unauthorized.") {
+                            document.cookie = "";
+                            window.location.href = "/index.html";
+                        }
+                    }
                     commands = data
                     render(commands);
                 })
                 .catch((error) => {
                     console.error('Error:', error);
                 });
-        } else {
-            location.href = `./index.html`;
-        }
+
     }
 
     function executeCommand(commandName) {
-        let result = checkAuth()
-        if (result) {
-            const data = {"password": result, "command": commandName};
+
+            const data = {"command": commandName};
             fetch('/commands/execute', {
+                credentials: 'include',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -82,6 +71,10 @@
                     console.log(data);
                     if (!data.success) {
                         document.getElementById(commandName).style.boxShadow = "3px 3px 10px 1px #ED4245";
+                        if (data.message === "Unauthorized.") {
+                            document.cookie = "";
+                            window.location.href = "/index.html";
+                        }
                     } else {
                         document.getElementById(commandName).style.boxShadow = "3px 3px 10px 1px #57F287";
                     }
@@ -90,9 +83,6 @@
                 .catch((error) => {
                     console.error('Error:', error);
                 });
-        } else {
-            location.href = `/index.html`;
-        }
     }
 
     setInterval(() => {

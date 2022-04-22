@@ -1,10 +1,11 @@
 package structures
 
 type Configuration struct {
-	HOST     string   `yaml:"host"`
-	PORT     string   `yaml:"port"`
-	PASSWORD string   `yaml:"password"`
-	BUTTONS  []Button `yaml:"buttons,flow"`
+	HOST           string   `yaml:"host"`
+	PORT           string   `yaml:"port"`
+	PASSWORD       string   `yaml:"password"`
+	SESSION_SECRET string   `yaml:"session_secret"`
+	BUTTONS        []Button `yaml:"buttons,flow"`
 }
 
 type Button struct {
@@ -29,7 +30,6 @@ type MinifiedButton struct {
 }
 
 type ClickButtonRequest struct {
-	Password    string `json:"password"`
 	CommandName string `json:"command"`
 }
 

@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/iimrudy/prismacontroller/app"
 	"github.com/iimrudy/prismacontroller/structures"
@@ -14,7 +15,8 @@ func CommandsExecute(ctx *gin.Context) {
 
 	success := false
 	message := "command not found"
-	if rq.Password == app.Get().Configuration.PASSWORD {
+	sx := sessions.Default(ctx)
+	if sx.Get("authorized") != nil && sx.Get("authorized").(bool) {
 		for _, cmd := range app.Get().Configuration.BUTTONS {
 			if cmd.Name == rq.CommandName {
 
@@ -30,7 +32,7 @@ func CommandsExecute(ctx *gin.Context) {
 		}
 	} else {
 		success = false
-		message = "Invalid password."
+		message = "Unauthorized."
 	}
 
 	ctx.JSON(200, gin.H{"success": success, "message": message})

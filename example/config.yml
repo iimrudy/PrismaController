@@ -1,72 +1,18 @@
-host: "0.0.0.0"
+host: 0.0.0.0
 port: "9871"
-password: "my_password" # put you password here
-# ------------------------
-# Keyboard Combination Button
-#  - id:
-#    name: "mute discord"
-#    display_name: "Mic Mute Discord"
-#    keys: ["m"]
-#    shift: false
-#    rshift: false
-#    logo: "mute.png"
-#    ctrl: true
-#    rctrl: false
-#    alt: true
-#    ralt: false
-# ------------------------
-# Shell Button
-#  - id:
-#    name: "browser"
-#    display_name: "Open Edge"
-#    logo: "meet.png"
-#    shell_command: "cmd /C start msedge"
-# ------------------------
-# ATTENTION
-# every "- :" need to be different
-# ------------------------
-# WRONG:
-# buttons:
-# - 0: ...
-# - 0: ...
-# ------------------------
-# RIGHT:
-# buttons:
-# - 0: ...
-# - 1: ...
-# ------------------------
-
-buttons:
-  - 0:
-    name: "mute discord"
-    display_name: "Mic Mute Discord"
-    keys: ["m"]
-    shift: false
-    rshift: false
-    logo: "meet.png"
-    ctrl: true
-    rctrl: false
-    alt: true
-    ralt: false
-  - 1:
-    name: "apex"
-    display_name: "Start Apex Legends"
-    logo: "apex-logo.png"
-    shell_command: "cmd /C start steam://rungameid/1172470"
-  - 2:
-    name: "aa"
-    display_name: "Start Apex Legends"
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Valorant_logo_-_pink_color_version.svg/1280px-Valorant_logo_-_pink_color_version.svg.png"
-    shell_command: "cmd /C start steam://rungameid/1172470"
-
-  - 3:
-    name: "bb"
-    display_name: "Start Apex Legends"
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/LEGO_logo.svg/500px-LEGO_logo.svg.png"
-    shell_command: "cmd /C start steam://rungameid/1172470"
-
-  - 4:
-    name: "cc"
-    display_name: "Start Apex Legends"
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/1024px-Microsoft_logo.svg.png"
-    shell_command: "cmd /C start steam://rungameid/1172470"
+password: my_password
+session_secret: BpLnfgDsc2WD8F2qNfHK5a84jjJkwzDkh9h2fhfUVuS9jZ8uVbhV3vC5AWX39IVU
+buttons: [{name: mute discord, display_name: Mic Mute Discord, shell_command: "",
+    keys: [m], logo: meet.png, shift: false, rshift: false, ctrl: true, rctrl: false,
+    alt: true, ralt: false}, {name: apex, display_name: Start Apex Legends, shell_command: 'cmd
+      /C start steam://rungameid/1172470', keys: [], logo: apex-logo.png, shift: false,
+    rshift: false, ctrl: false, rctrl: false, alt: false, ralt: false}, {name: aa,
+    display_name: Start Apex Legends, shell_command: 'cmd /C start steam://rungameid/1172470',
+    keys: [], logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Valorant_logo_-_pink_color_version.svg/1280px-Valorant_logo_-_pink_color_version.svg.png',
+    shift: false, rshift: false, ctrl: false, rctrl: false, alt: false, ralt: false},
+  {name: bb, display_name: Start Apex Legends, shell_command: 'cmd /C start steam://rungameid/1172470',
+    keys: [], logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/LEGO_logo.svg/500px-LEGO_logo.svg.png',
+    shift: false, rshift: false, ctrl: false, rctrl: false, alt: false, ralt: false},
+  {name: cc, display_name: Start Apex Legends, shell_command: 'cmd /C start steam://rungameid/1172470',
+    keys: [], logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/1024px-Microsoft_logo.svg.png',
+    shift: false, rshift: false, ctrl: false, rctrl: false, alt: false, ralt: false}]

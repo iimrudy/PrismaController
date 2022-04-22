@@ -11,7 +11,7 @@
     <!--<script src="./scripts/loadElements.js"></script>-->
 
 </head>
-<body>
+<body onload="onLoad_()">
     
 
     <div class="authform">
@@ -24,9 +24,14 @@
     </div>
 
     <script>
+        function onLoad_() {
+            if (document.cookie.length > 0) {
+                location.href = `/deck.html`;
+            }
+        }
         function handleAuth() {
             let auth = document.getElementById("auth-token").value;
-            if (auth) {
+            if (auth || document.cookie) {
                 const data = {"password": auth};
                 fetch('/authorize', {
                     method: 'POST',
@@ -41,7 +46,7 @@
                         if (data.success == false){
                             document.getElementById("log").innerText = data.message;
                         } else {
-                            location.href = `/deck.html?token=${auth}`;
+                            location.href = `/deck.html`;
                         }
                     })
                     .catch((error) => {

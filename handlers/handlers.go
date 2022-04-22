@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	"github.com/iimrudy/prismacontroller/app"
 	"io/fs"
@@ -8,20 +10,24 @@ import (
 )
 
 func InitRoutes(prisma *app.PrismaController) error {
-	// Static files
+
+	// session handler
+	store := cookie.NewStore([]byte(prisma.Configuration.SESSION_SECRET))
+	prisma.Gin.Use(sessions.Sessions("pc_session", store))
+
+	// Authorize
+	prisma.Gin.POST("/authorize", AuthorizationHandler)
 
 	// icons
 	prisma.Gin.Static("/icons", prisma.Path+"icons")
 
 	// Get Commands
-	prisma.Gin.POST("/commands/get", CommandsGet)
+	prisma.Gin.GET("/commands/get", CommandsGet)
 
 	// Handle Command
 	prisma.Gin.POST("/commands/execute", CommandsExecute)
 
-	// Authorize
-	prisma.Gin.POST("/authorize", AuthorizationHandler)
-
+	// Static files
 	if sub, err := fs.Sub(prisma.Static, "static"); err == nil {
 		prisma.Gin.Use(func() gin.HandlerFunc {
 			fss := http.FS(sub)
@@ -29,7 +35,6 @@ func InitRoutes(prisma *app.PrismaController) error {
 			return func(c *gin.Context) {
 				fileserver.ServeHTTP(c.Writer, c.Request)
 				c.Header("Cache-Control", "public, max-age=31536000")
-				c.Abort()
 			}
 		}())
 

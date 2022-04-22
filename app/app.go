@@ -9,6 +9,7 @@ import (
 	"gopkg.in/yaml.v2"
 	"log"
 	"net/http"
+	"os"
 )
 
 type PrismaController struct {
@@ -40,6 +41,31 @@ func Init(path string, static embed.FS) (*PrismaController, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	if ct, err := utils.ReadFileToString(path + "key.prismac"); err != nil {
+		if os.IsNotExist(err) {
+			log.Println("No key found, generating one")
+			if err := utils.WriteStringToFile(path+"key.prismac", utils.RandomString(64)); err != nil {
+				return nil, err
+			} else {
+				return Init(path, static)
+			}
+		} else {
+			config.SESSION_SECRET = *ct
+		}
+	}
+
+	if len(config.SESSION_SECRET) == 0 {
+		config.SESSION_SECRET = utils.RandomString(64)
+		bytes, err := yaml.Marshal(config)
+		if err != nil {
+			return nil, err
+		}
+		if err := utils.WriteStringToFile(path+"config.yml", string(bytes)); err != nil {
+			return nil, err
+		}
+	}
+
 	prisma := &PrismaController{
 		Path:          path,
 		Static:        static,
