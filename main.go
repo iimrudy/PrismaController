@@ -44,7 +44,6 @@ func init() {
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
-	log.Println("Using path" + Path)
 	gin.SetMode(gin.ReleaseMode)
 }
 

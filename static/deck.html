@@ -3,235 +3,115 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>PrismaController - Deck</title>
 
-    <link rel="stylesheet" href="/style/main.css">
+    <link href="/style/main.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/nosleep/0.12.0/NoSleep.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="/scripts/utils.js"></script>
+    <script src="/scripts/loadElements.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nosleep/0.12.0/NoSleep.min.js"></script>
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+          integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+          referrerpolicy="no-referrer" rel="stylesheet"/>
 </head>
 
 <body onload="renderCommands()">
 
-    <div class="togglescreen left" id="fs-icon" onclick="toggleFS()"><i class="fas fa-expand-arrows-alt"></i></div><div class="togglescreen right" id="wake-lock"><i class="fas fa-lock-open"></i></div>
-    <div class="deck" id="deck">
+<div class="togglescreen left" id="fs-icon" onclick="toggleFS()"><i class="fas fa-expand-arrows-alt"></i></div>
+<div class="togglescreen right" id="wake-lock"><i class="fas fa-lock-open"></i></div>
+<div class="deck" id="deck">
 
-    </div>
+</div>
 
 
-    <script>
-        const elem = document.documentElement;
+<script>
+    const elem = document.documentElement;
 
-        function getAverageRGB(imgEl) {
-            var blockSize = 5, // only visit every 5 pixels
-                defaultRGB = { r: 0, g: 0, b: 0 }, // for non-supporting envs
-                canvas = document.createElement("canvas"),
-                context = canvas.getContext && canvas.getContext("2d"),
-                data,
-                width,
-                height,
-                i = -4,
-                length,
-                rgb = { r: 0, g: 0, b: 0 },
-                count = 0;
+    const delayMap = new Map();
 
-            if (!context) {
-                return defaultRGB;
-            }
-
-            height = canvas.height =
-                imgEl.naturalHeight || imgEl.offsetHeight || imgEl.height;
-            width = canvas.width = imgEl.naturalWidth || imgEl.offsetWidth || imgEl.width;
-
-            context.drawImage(imgEl, 0, 0);
-
-            try {
-                data = context.getImageData(0, 0, width, height);
-            } catch (e) {
-                console.log(e);
-                /* security error, img on diff domain */ //alert("x");
-                return defaultRGB;
-            }
-
-            length = data.data.length;
-
-            while ((i += blockSize * 4) < length) {
-                ++count;
-                rgb.r += data.data[i];
-                rgb.g += data.data[i + 1];
-                rgb.b += data.data[i + 2];
-            }
-
-            // ~~ used to floor values
-            rgb.r = ~~(rgb.r / count);
-            rgb.g = ~~(rgb.g / count);
-            rgb.b = ~~(rgb.b / count);
-
-            return rgb;
+    function checkAuth() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('token')) {
+            const auth = urlParams.get('token');
+            return auth
+        } else {
+            return false
         }
-        const LightenColor = function(R, G, B, percent) {
-            var amt = Math.round(2.55 * percent),
-                R = R + amt ;
-            B = B + amt;
-            G = G + amt;
-            return {r: R, g: G, b: B};
-        };
-
-        const delayMap = new Map();
-
-        function openFullscreen() {
-            if (elem.requestFullscreen) {
-                elem.requestFullscreen();
-            } else if (elem.webkitRequestFullscreen) { /* Safari */
-                elem.webkitRequestFullscreen();
-            } else if (elem.msRequestFullscreen) { /* IE11 */
-                elem.msRequestFullscreen();
-            }
-            document.getElementById("fs-icon").innerHTML = '<i class="fas fa-compress-arrows-alt"></i>';
-        }
-
-        function closeFullscreen() {
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            } else if (document.webkitExitFullscreen) { /* Safari */
-                document.webkitExitFullscreen();
-            } else if (document.msExitFullscreen) { /* IE11 */
-                document.msExitFullscreen();
-            }
-            document.getElementById("fs-icon").innerHTML = '<i class="fas fa-expand-arrows-alt"></i>';
-        }
-
-        function toggleFS() {
-            if ((window.fullScreen) ||(window.innerWidth == screen.width && window.innerHeight == screen.height)) {
-                closeFullscreen();
-            } else {
-                openFullscreen();
-            }
-        }
-
-        function checkAuth() {
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.has('token')) {
-                const auth = urlParams.get('token');
-                return auth
-            } else {
-                return false
-            }
-        }
-
-        function renderCommands() {
-            let result = checkAuth()
-            if (result) {
-                const data = { "password": result };
-                fetch('/commands/get', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data),
+    }
+    let commands = {}
+    function renderCommands() {
+        let result = checkAuth()
+        if (result) {
+            const data = {"password": result};
+            fetch('/commands/get', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    commands = data
+                    render(commands);
                 })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            console.log(data)
-                            data.message.forEach(element => {
-                                let logo = (element.logo == "") ? "/img/default.png" : `/icons/${element.logo}`;
-                                document.getElementById("deck").innerHTML += `
-                                    <div class="element" id="${element.name}" onclick="executeCommand(this.id)">
-                                        <div style="text-align: center;">
-                                            <img src="${logo}" id="img-${element.name}" />
-                                        </div>
-                                    </div>
-                                `;
-                                let aa = document.getElementById("img-" + element.name);
-                                aa.addEventListener("load", function () {
-                                    let c = getAverageRGB(aa);
-                                    c = LightenColor(c.r, c.g, c.b, -10);
-                                    if (c.r < 40) {
-                                        c.r *= 2.3;
-                                    }
-                                    if (c.g < 40) {
-                                        c.g *= 2;
-                                    }
-                                    if (c.b < 40) {
-                                        c.b *= 2;
-                                    }
-                                    document.getElementById(element.name).style.backgroundColor  = `rgb(${Math.abs(c.r)}, ${Math.abs(c.g)}, ${Math.abs(c.b)})`;
-                                });
-                            })
-                        } else {
-                            console.log(`Something goes wrong`);
-                        }
-
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                    });
-            } else {
-                location.href = `./index.html`;
-            }
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        } else {
+            location.href = `./index.html`;
         }
+    }
 
-        function executeCommand(element) {
-            let result = checkAuth()
-            if (result) {
-                const data = { "password": result, "command": element };
-                fetch('/commands/execute', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data),
+    function executeCommand(commandName) {
+        let result = checkAuth()
+        if (result) {
+            const data = {"password": result, "command": commandName};
+            fetch('/commands/execute', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    if (!data.success) {
+                        document.getElementById(commandName).style.boxShadow = "3px 3px 10px 1px #ED4245";
+                    } else {
+                        document.getElementById(commandName).style.boxShadow = "3px 3px 10px 1px #57F287";
+                    }
+                    delayMap.set(document.getElementById(commandName), new Date().getTime());
                 })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data);
-                        if (!data.success) {
-                            document.getElementById(element).style.boxShadow = "3px 3px 10px 1px #ED4245";
-                        } else {
-                            document.getElementById(element).style.boxShadow = "3px 3px 10px 1px #57F287";
-                        }
-                        delayMap.set(document.getElementById(element), new Date().getTime());
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                    });
-            } else {
-                location.href = `/index.html`;
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        } else {
+            location.href = `/index.html`;
+        }
+    }
+
+    setInterval(() => {
+        // iterate over all the keys in the delayMap
+        for (let [key, value] of delayMap) {
+            if ((new Date().getTime() - value) >= 1500) {
+                key.style.boxShadow = "3px 3px 10px 1px #171b1f";
+                delayMap.delete(key);
             }
         }
+    }, 100)
 
-        setInterval(() => {
-            // iterate over all the keys in the delayMap
-            for (let [key, value] of delayMap) {
-                if ((new Date().getTime() - value) >= 1500 ) {
-                    key.style.boxShadow = "3px 3px 10px 1px #171b1f";
-                    delayMap.delete(key);
-                }
-            }
-        }, 100)
+</script>
 
-        // prevent pinch-to-zoom https://stackoverflow.com/questions/11689353/disable-pinch-zoom-on-mobile-web
-        document.addEventListener('gesturestart', function (e) {
-            e.preventDefault();
-            document.body.style.zoom = 1;
-        });
-        document.addEventListener('gesturechange', function (e) {
-            e.preventDefault();
-            document.body.style.zoom = 1;
-        });
-        document.addEventListener('gestureend', function (e) {
-            e.preventDefault();
-            document.body.style.zoom = 1;
-        });
-    </script>
-
-    <script>
-        const noSleep = new NoSleep();
-        let wakeLockEnabled = false;
-        const toggleEl = document.querySelector("#wake-lock");
-        toggleEl.addEventListener('click', function() {
+<script>
+    const noSleep = new NoSleep();
+    let wakeLockEnabled = false;
+    const toggleEl = document.querySelector("#wake-lock");
+    toggleEl.addEventListener('click', function () {
         if (!wakeLockEnabled) {
             noSleep.enable(); // keep the screen on!
             wakeLockEnabled = true;
@@ -241,8 +121,8 @@
             wakeLockEnabled = false;
             document.querySelector("#wake-lock").innerHTML = '<i class="fas fa-lock-open"></i>';
         }
-        }, false);
-  </script>
+    }, false);
+</script>
 </body>
 
 </html>

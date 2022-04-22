@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/iimrudy/prismacontroller/app"
 	"github.com/iimrudy/prismacontroller/structures"
@@ -10,7 +9,6 @@ import (
 func AuthorizationHandler(ctx *gin.Context) {
 	var pass structures.PasswordRequest
 	ctx.BindJSON(&pass)
-	fmt.Printf("PASS --> ", pass)
 
 	var success bool = false
 	var message interface{} = "Invalid password."

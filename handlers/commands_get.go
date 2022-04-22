@@ -22,8 +22,9 @@ func CommandsGet(ctx *gin.Context) {
 		message = mcmds
 	}
 
-	ctx.JSON(200, gin.H{
+	rep := gin.H{
 		"success": success,
 		"message": message,
-	})
+	}
+	ctx.JSON(200, rep)
 }

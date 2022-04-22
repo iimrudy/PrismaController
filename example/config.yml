@@ -53,3 +53,20 @@ buttons:
     display_name: "Start Apex Legends"
     logo: "apex-logo.png"
     shell_command: "cmd /C start steam://rungameid/1172470"
+  - 2:
+    name: "aa"
+    display_name: "Start Apex Legends"
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Valorant_logo_-_pink_color_version.svg/1280px-Valorant_logo_-_pink_color_version.svg.png"
+    shell_command: "cmd /C start steam://rungameid/1172470"
+
+  - 3:
+    name: "bb"
+    display_name: "Start Apex Legends"
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/LEGO_logo.svg/500px-LEGO_logo.svg.png"
+    shell_command: "cmd /C start steam://rungameid/1172470"
+
+  - 4:
+    name: "cc"
+    display_name: "Start Apex Legends"
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/1024px-Microsoft_logo.svg.png"
+    shell_command: "cmd /C start steam://rungameid/1172470"

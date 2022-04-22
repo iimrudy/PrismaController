@@ -25,6 +25,7 @@ type MinifiedButton struct {
 	Name        string `json:"name"`
 	Logo        string `json:"logo"`
 	DisplayName string `json:"display_name"`
+	IsFolder    bool   `json:"is_folder"`
 }
 
 type ClickButtonRequest struct {

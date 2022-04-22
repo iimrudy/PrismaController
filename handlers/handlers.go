@@ -2,12 +2,12 @@ package handlers
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/iimrudy/prismacontroller/prismacontroller"
+	"github.com/iimrudy/prismacontroller/app"
 	"io/fs"
 	"net/http"
 )
 
-func InitRoutes(prisma *prismacontroller.PrismaController) error {
+func InitRoutes(prisma *app.PrismaController) error {
 	// Static files
 
 	// icons
@@ -21,10 +21,6 @@ func InitRoutes(prisma *prismacontroller.PrismaController) error {
 
 	// Authorize
 	prisma.Gin.POST("/authorize", AuthorizationHandler)
-	prisma.Server = &http.Server{
-		Addr:    prisma.Address,
-		Handler: prisma.Gin,
-	}
 
 	if sub, err := fs.Sub(prisma.Static, "static"); err == nil {
 		prisma.Gin.Use(func() gin.HandlerFunc {
@@ -32,6 +28,7 @@ func InitRoutes(prisma *prismacontroller.PrismaController) error {
 			fileserver := http.StripPrefix("/", http.FileServer(fss))
 			return func(c *gin.Context) {
 				fileserver.ServeHTTP(c.Writer, c.Request)
+				c.Header("Cache-Control", "public, max-age=31536000")
 				c.Abort()
 			}
 		}())

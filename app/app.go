@@ -4,16 +4,29 @@ import (
 	"embed"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/iimrudy/prismacontroller/prismacontroller"
 	"github.com/iimrudy/prismacontroller/structures"
 	"github.com/iimrudy/prismacontroller/utils"
 	"gopkg.in/yaml.v2"
 	"log"
+	"net/http"
 )
 
-var instance *prismacontroller.PrismaController
+type PrismaController struct {
+	Static        embed.FS
+	Address       string
+	Gin           *gin.Engine
+	Configuration *structures.Configuration
+	Server        *http.Server
+	Path          string
+}
 
-func Init(path string, static embed.FS) (*prismacontroller.PrismaController, error) {
+func (pc *PrismaController) Listen() error {
+	return pc.Server.ListenAndServe()
+}
+
+var instance *PrismaController
+
+func Init(path string, static embed.FS) (*PrismaController, error) {
 	if instance != nil {
 		return instance, nil
 	}
@@ -27,18 +40,22 @@ func Init(path string, static embed.FS) (*prismacontroller.PrismaController, err
 	if err != nil {
 		return nil, err
 	}
-	prisma := &prismacontroller.PrismaController{
+	prisma := &PrismaController{
 		Path:          path,
 		Static:        static,
 		Address:       fmt.Sprintf("%s:%s", config.HOST, config.PORT),
 		Configuration: config,
 		Gin:           gin.Default(),
 	}
+	prisma.Server = &http.Server{
+		Addr:    prisma.Address,
+		Handler: prisma.Gin,
+	}
 
 	instance = prisma
 	return prisma, nil
 }
 
-func Get() *prismacontroller.PrismaController {
+func Get() *PrismaController {
 	return instance
 }

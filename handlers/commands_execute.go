@@ -17,12 +17,12 @@ func CommandsExecute(ctx *gin.Context) {
 	if rq.Password == app.Get().Configuration.PASSWORD {
 		for _, cmd := range app.Get().Configuration.BUTTONS {
 			if cmd.Name == rq.CommandName {
-				go func() {
-					err := utils.RunCommand(cmd)
-					if err != nil {
-						log.Println(err.Error())
-					}
-				}()
+
+				err := utils.RunCommand(cmd)
+				if err != nil {
+					log.Println(err.Error())
+				}
+
 				success = true
 				message = "executed"
 				break
