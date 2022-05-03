@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"github.com/gin-contrib/sessions"
-	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	"github.com/iimrudy/prismacontroller/app"
 	"io/fs"
@@ -12,8 +11,7 @@ import (
 func InitRoutes(prisma *app.PrismaController) error {
 
 	// session handler
-	store := cookie.NewStore([]byte(prisma.Configuration.SESSION_SECRET))
-	prisma.Gin.Use(sessions.Sessions("pc_session", store))
+	prisma.Gin.Use(sessions.Sessions("pc_session", app.Get().Store))
 
 	// Authorize
 	prisma.Gin.POST("/authorize", AuthorizationHandler)

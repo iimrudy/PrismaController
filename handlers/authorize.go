@@ -24,6 +24,9 @@ func AuthorizationHandler(ctx *gin.Context) {
 			message = "Valid password."
 			sx.Set("authorized", true)
 			sx.Save()
+		} else {
+			sx.Clear()
+			sx.Save()
 		}
 	}
 

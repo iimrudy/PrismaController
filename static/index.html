@@ -31,7 +31,7 @@
         }
         function handleAuth() {
             let auth = document.getElementById("auth-token").value;
-            if (auth || document.cookie) {
+            if (auth) {
                 const data = {"password": auth};
                 fetch('/authorize', {
                     method: 'POST',

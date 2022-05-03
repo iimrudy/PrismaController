@@ -13,7 +13,9 @@ func CommandsGet(ctx *gin.Context) {
 	success := false
 	var message interface{}
 	message = "Unauthorized."
+
 	sx := sessions.Default(ctx)
+
 	if sx.Get("authorized") != nil && sx.Get("authorized").(bool) {
 		success = true
 		var mcmds []structures.MinifiedButton
@@ -21,6 +23,9 @@ func CommandsGet(ctx *gin.Context) {
 			mcmds = append(mcmds, utils.ButtonToMinifiedButton(cmd))
 		}
 		message = mcmds
+	} else {
+		sx.Clear()
+		sx.Save()
 	}
 
 	rep := gin.H{

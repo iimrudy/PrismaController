@@ -72,8 +72,10 @@
                     if (!data.success) {
                         document.getElementById(commandName).style.boxShadow = "3px 3px 10px 1px #ED4245";
                         if (data.message === "Unauthorized.") {
-                            document.cookie = "";
+                            deleteAllCookies();
                             window.location.href = "/index.html";
+                        } else if (data.message === "already in execution") {
+                            document.getElementById(commandName).style.boxShadow = "3px 3px 10px 1px #c57c21";
                         }
                     } else {
                         document.getElementById(commandName).style.boxShadow = "3px 3px 10px 1px #57F287";

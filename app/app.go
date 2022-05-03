@@ -3,6 +3,7 @@ package app
 import (
 	"embed"
 	"fmt"
+	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	"github.com/iimrudy/prismacontroller/structures"
 	"github.com/iimrudy/prismacontroller/utils"
@@ -19,6 +20,7 @@ type PrismaController struct {
 	Configuration *structures.Configuration
 	Server        *http.Server
 	Path          string
+	Store         cookie.Store
 }
 
 func (pc *PrismaController) Listen() error {
@@ -55,23 +57,13 @@ func Init(path string, static embed.FS) (*PrismaController, error) {
 		}
 	}
 
-	if len(config.SESSION_SECRET) == 0 {
-		config.SESSION_SECRET = utils.RandomString(64)
-		bytes, err := yaml.Marshal(config)
-		if err != nil {
-			return nil, err
-		}
-		if err := utils.WriteStringToFile(path+"config.yml", string(bytes)); err != nil {
-			return nil, err
-		}
-	}
-
 	prisma := &PrismaController{
 		Path:          path,
 		Static:        static,
 		Address:       fmt.Sprintf("%s:%s", config.HOST, config.PORT),
 		Configuration: config,
 		Gin:           gin.Default(),
+		Store:         cookie.NewStore([]byte(config.SESSION_SECRET)),
 	}
 	prisma.Server = &http.Server{
 		Addr:    prisma.Address,
